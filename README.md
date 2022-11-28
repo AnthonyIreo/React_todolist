@@ -1,12 +1,12 @@
-## React_todolist
+# React_todolist
 
-# Expo react native porject
+## Expo react native porject
 
-requirement:
+### Requirement:
 1, node
 2, npm
 
 Please check out the version of node and npm that can build expo environment.
 
-run:
+### Run:
 1, in /React_todolist, npm start, then follow the constructions.
