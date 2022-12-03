@@ -1,18 +1,43 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 
 import Task from './components/Task';
 
 export default function App() {
+  
+  const [task, setTask] = useState();
+  const [taskItems, setTaskItems] = useState([]);
+
+  const handleAddTask = () => {
+    console.log(task);
+    // Keyboard.dismiss();
+    setTaskItems([...taskItems, task]);
+    setTask(null);
+  }
+  
+  const completeTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
+  }
+
   return (
     <View style={styles.container}>
     	
 	  {/* Today's tasks */}
 	  <View style={styles.tasksWrapper}>
 	  <Text style={styles.sectionTitle}>Today's Tasks</Text> 
-    <View style={styles.items}> 
-    <Task text={'Task 1'}/> 
-    <Task text={'Task 2'}/> 
+    <View style={styles.items}>
+          {
+          taskItems.map((item, index) => {
+            return(
+              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+                <Task text={item} />
+              </TouchableOpacity>
+            ) 
+          })
+        }
 
     </View> 
 
@@ -23,9 +48,11 @@ export default function App() {
       behavior={Platform.OS === "ios" ? "padding":"height"}
       style={styles.writeTaskWrapper}
       > 
-      <TextInput style={styles.input} placeholder={'Write a task'} />
+      <TextInput style={styles.input} placeholder={'Write a task'} 
+          value={task}
+          onChangeText={text => setTask(text)} />
       
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => handleAddTask() } >
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
@@ -56,7 +83,7 @@ const styles = StyleSheet.create({
     bottom: 60,
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center'
   },
   input: {
